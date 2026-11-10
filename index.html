@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B5D3B">
+<title>Hesabu: the daily record both sides agree on</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Hesabu home">
+    <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true">
+      <rect width="32" height="32" rx="9" fill="#0B5D3B"/>
+      <path d="M9 8v15M14.5 8v15M20 8v15" stroke="#EEF3EF" stroke-width="3" stroke-linecap="round"/>
+      <path d="M5.5 21.5l7 5 14-16" stroke="#F4B223" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Hesabu</span>
+  </a>
+  <div class="ctrl">
+    <button id="role" class="pill" type="button"></button>
+    <button id="mode" class="pill" type="button"></button>
+  </div>
+</header>
+<main id="app"></main>
+<div id="sheet" class="sheet" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
