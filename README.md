@@ -38,3 +38,4 @@ Covered = paid to owner + approved driver-paid deductions. Still owed = hesabu m
 ## Privacy
 
 Data stays in the browser in this version. Do not commit real names or amounts to a public repository.
+# hesabu
