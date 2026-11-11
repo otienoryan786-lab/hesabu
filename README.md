@@ -12,7 +12,8 @@ Boda, matatu and delivery owners hand vehicles to drivers who remit a daily targ
 
 ## Also in this version
 
-- Arrears carried over from earlier days
+- Arrears carried over from earlier days, including days nobody recorded, with an optional weekly rest day per vehicle
+- Installable on a phone and opens offline (the saved pages load without a connection)
 - Last 30 days per vehicle: cash received, costs paid by the owner, net earned, and a warning when repairs and tyres take 25% or more of earnings
 - Remind on WhatsApp for drivers who are short (needs the driver's phone number)
 - A welcome page (`index.html`) that opens the app with Demo data or My data
@@ -32,10 +33,9 @@ Covered = paid to owner + approved driver-paid deductions. Still owed = hesabu m
 ## Roadmap
 
 - Phase 2: automatic M-Pesa matching (Daraja C2B Paybill or Till), a shareable driver link, login, a database and online receipt storage, SMS reminders
-- Phase 3: online checking of Hesabu Record codes, Swahili and English, offline install on phones
+- Phase 3: online checking of Hesabu Record codes, Swahili and English, a way to edit a vehicle without rewriting history
 - Phase 4: weekly owner reports
 
 ## Privacy
 
 Data stays in the browser in this version. Do not commit real names or amounts to a public repository.
-# hesabu

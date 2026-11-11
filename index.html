@@ -8,6 +8,8 @@
 <meta name="description" content="A shared daily record for boda, matatu and delivery owners and their drivers.">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="welcome.css">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 <header class="top">
@@ -61,5 +63,6 @@
   <p>In this version your data stays on your phone. Download a backup from the Records page. Online sync, automatic M-Pesa matching and logins are coming next.</p>
   <div class="cta"><a class="btn" href="app.html?mode=demo">Try the demo</a><a class="btn alt" href="app.html?mode=mine">Start with my vehicles</a></div>
 </div></section>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </body>
 </html>

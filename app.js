@@ -12,11 +12,12 @@ const phone = p => { let d = String(p || '').replace(/\D/g, ''); if (d.startsWit
 
 const demo = () => ({
   vehicles: [
-    { id: 'v1', plate: 'KMDK 214A', driver: 'Brian', phone: '', target: 1000 },
-    { id: 'v2', plate: 'KDG 508C', driver: 'Wanjiku', phone: '0700000000', target: 1000 },
-    { id: 'v3', plate: 'KCX 771T', driver: 'Kamau', phone: '', target: 1500 }
+    { id: 'v1', plate: 'KMDK 214A', driver: 'Brian', phone: '', target: 1000, since: day(-1) },
+    { id: 'v2', plate: 'KDG 508C', driver: 'Wanjiku', phone: '0700000000', target: 1000, since: day(-1) },
+    { id: 'v3', plate: 'KCX 771T', driver: 'Kamau', phone: '', target: 1500, since: day(-1), off: 0 }
   ],
   entries: [
+    { id: 'd0', vehicleId: 'v1', date: day(-1), paid: 1000, method: 'Cash', ref: '', status: 'agreed' },
     { id: 'd1', vehicleId: 'v2', date: day(-1), paid: 800, method: 'M-Pesa', ref: '', status: 'agreed' },
     { id: 'd2', vehicleId: 'v1', date: day(0), paid: 1000, method: 'Cash', ref: '', status: 'pending' },
     { id: 'd3', vehicleId: 'v2', date: day(0), paid: 600, method: 'Cash', ref: '', status: 'pending' }
@@ -29,7 +30,7 @@ const demo = () => ({
 
 const ID = /^\w{1,12}$/, DT = /^\d{4}-\d\d-\d\d$/;
 const goodSet = s => !!s && ['vehicles', 'entries', 'expenses'].every(k => Array.isArray(s[k]))
-  && s.vehicles.every(v => ID.test(v.id) && Number.isFinite(v.target))
+  && s.vehicles.every(v => ID.test(v.id) && Number.isFinite(v.target) && (v.since == null || DT.test(v.since)) && (v.off == null || Number.isInteger(v.off)))
   && s.entries.every(e => ID.test(e.id) && ID.test(e.vehicleId) && Number.isFinite(e.paid) && DT.test(e.date) && ['pending', 'agreed', 'disputed'].includes(e.status))
   && s.expenses.every(x => ID.test(x.id) && ID.test(x.vehicleId) && Number.isFinite(x.amount) && DT.test(x.date) && ['requested', 'approved', 'rejected'].includes(x.status) && ['driver', 'owner'].includes(x.paidBy));
 const goodState = r => !!r && goodSet(r.demo) && goodSet(r.mine) && ['demo', 'mine'].includes(r.mode) && ['owner', 'driver'].includes(r.role);
@@ -44,7 +45,14 @@ const live = () => D().entries.filter(e => !e.superseded);
 const entOn = (v, d) => live().find(e => e.vehicleId === v.id && e.date === d);
 const dedOn = (v, d) => sum(D().expenses.filter(x => x.vehicleId === v.id && x.date === d && x.paidBy === 'driver' && x.status === 'approved'));
 const covOn = (v, d) => (entOn(v, d) ? entOn(v, d).paid : 0) + dedOn(v, d);
-const arrears = v => live().filter(e => e.vehicleId === v.id && e.date < day(0)).reduce((a, e) => a + Math.max(0, v.target - covOn(v, e.date)), 0);
+const wd = d => new Date(d + 'T00:00:00').getDay();
+const isOff = (v, d) => Number.isInteger(v.off) && v.off === wd(d);
+const since = v => v.since || D().entries.filter(e => e.vehicleId === v.id).map(e => e.date).sort()[0] || day(0);
+const arrears = v => {
+  let a = 0; const n = Math.min(400, Math.round((Date.parse(day(0)) - Date.parse(since(v))) / 864e5));
+  for (let i = 1; i <= n; i++) { const d = day(-i); if (!isOff(v, d)) a += Math.max(0, v.target - covOn(v, d)); }
+  return a;
+};
 
 function render() {
   const owner = S.role === 'owner', d = D(), t = day(0);
@@ -54,7 +62,7 @@ function render() {
   $('#mode').setAttribute('aria-pressed', String(S.mode === 'demo'));
   const tabs = `<nav class="tabs" aria-label="Sections">${[['today', 'Today'], ['records', 'Records']].map(([k, n]) => `<button class="tab" data-view="${k}" type="button" aria-pressed="${(S.view || 'today') === k}">${n}</button>`).join('')}</nav>`;
   if (S.view === 'records') { $('#app').innerHTML = tabs + records(); return; }
-  const exp = sum(d.vehicles.map(v => ({ amount: v.target })));
+  const exp = sum(d.vehicles.map(v => ({ amount: isOff(v, t) ? 0 : v.target })));
   const got = sum(d.vehicles.map(v => ({ amount: covOn(v, t) })));
   const pct = exp ? Math.min(100, Math.round(got / exp * 100)) : 0;
   const pend = d.expenses.filter(x => x.status === 'requested').length;
@@ -83,12 +91,12 @@ const xline = (x, owner) => `<li>${okp(x.photo) ? `<button class="thumbb" data-a
 function card(v) {
   const t = day(0), e = entOn(v, t), cov = covOn(v, t), owner = S.role === 'owner';
   const st = !e && !cov ? 'none' : cov >= v.target ? 'paid' : 'short';
-  const label = { none: 'Not yet', paid: 'Paid', short: 'Short' }[st];
+  const label = st === 'none' && isOff(v, t) ? 'Rest day' : { none: 'Not yet', paid: 'Paid', short: 'Short' }[st];
   const ar = arrears(v), xs = D().expenses.filter(x => x.vehicleId === v.id && x.date === t);
   let h = `<article class="card ${st}"><div class="row"><div><h3>${esc(v.plate)}</h3>
     <p class="sub">${esc(v.driver)}, hesabu ${fmt(v.target)}</p></div><span class="tag s-${st}">${label}</span></div>
     <p class="big">${fmt(cov)} <span>of ${fmt(v.target)}</span></p>`;
-  if (ar) h += `<p class="note warn">Arrears carried: ${fmt(ar)}</p>`;
+  if (ar) h += `<p class="note warn">Arrears, including missed days: ${fmt(ar)}</p>`;
   if (e) {
     h += `<p class="note">Paid ${fmt(e.paid)} by ${esc(e.method)}${e.ref ? ', code ' + esc(e.ref) : ''}</p>
     <p class="ent e-${e.status}">${{ pending: 'Waiting for driver to agree', agreed: 'Agreed by both. Locked.', disputed: 'Disputed by driver' }[e.status]}</p>`;
@@ -100,7 +108,7 @@ function card(v) {
     if (!e || e.status !== 'agreed') h += `<button class="btn" data-act="rec" data-id="${v.id}" type="button">${e ? 'Correct record' : 'Record today'}</button>`;
     h += `<button class="btn alt" data-act="exp" data-id="${v.id}" type="button">Add a cost</button>`;
     const p = phone(v.phone);
-    if (p && cov < v.target) {
+    if (p && cov < v.target && !isOff(v, t)) {
       const msg = `Hi ${v.driver}, friendly reminder: today's hesabu for ${v.plate} is ${fmt(v.target)}. Still owed: ${fmt(v.target - cov)}. Please send it and confirm. Thank you.`;
       h += `<a class="btn alt" href="https://wa.me/${p}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">Remind on WhatsApp</a>`;
     }
@@ -207,7 +215,7 @@ function saveRecord(vid) {
   const v = D().vehicles.find(x => x.id === vid), old = entOn(v, day(0)), err = m => { $('#err').textContent = m; };
   const raw = $('#paid').value, paid = Math.round(+raw), ref = $('#ref').value.trim().toUpperCase();
   if (raw === '' || !(paid >= 0)) return err('Enter the amount paid. Use 0 if nothing was paid.');
-  const dup = ref && D().entries.find(x => x.ref === ref && x !== old);
+  const dup = ref && D().entries.find(x => x.ref === ref && !(x.vehicleId === vid && x.date === day(0)));
   if (dup) { const q = D().vehicles.find(z => z.id === dup.vehicleId); return err(`This M-Pesa code was already recorded on ${dup.date} for ${q ? q.plate : 'another vehicle'}.`); }
   const e = { id: uid(), vehicleId: vid, date: day(0), paid, method: $('#method').value, ref, status: 'pending' };
   if (old) { old.superseded = true; e.replaces = old.id; }
@@ -284,6 +292,7 @@ function addSheet() {
   <label for="drv">Driver name</label><input id="drv" maxlength="40">
   <label for="ph">Driver phone, for reminders (optional)</label><input id="ph" type="tel" maxlength="15" placeholder="0712 345 678">
   <label for="tgt">Daily hesabu (KES)</label><input id="tgt" type="number" min="1" inputmode="numeric">
+  <label for="off">Rest day (no hesabu due)</label><select id="off"><option value="">None, works every day</option><option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option></select>
   <p class="err" id="err"></p><button class="btn full" data-act="addsave" type="button">Save vehicle</button>${cancel}`);
 }
 
@@ -312,7 +321,7 @@ document.addEventListener('click', ev => {
     const plate = $('#plate').value.trim().toUpperCase(), driver = $('#drv').value.trim(), target = Math.round(+$('#tgt').value), ph = $('#ph').value.trim();
     if (!plate || !driver || !(target > 0)) { $('#err').textContent = 'Fill in the plate, the driver name and a hesabu above 0.'; return; }
     if (ph && !phone(ph)) { $('#err').textContent = 'That phone number looks wrong. Use a Kenyan number like 0712 345 678.'; return; }
-    D().vehicles.push({ id: uid(), plate, driver, phone: ph, target }); save(); close(); render();
+    D().vehicles.push({ id: uid(), plate, driver, phone: ph, target, off: $('#off').value === '' ? null : +$('#off').value, since: day(0) }); save(); close(); render();
   } else if (a === 'backup') backup();
   else if (a === 'restore') restore();
   else if (a === 'print') window.print();
