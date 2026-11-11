@@ -7,7 +7,7 @@ Boda, matatu and delivery owners hand vehicles to drivers who remit a daily targ
 ## The loop
 
 1. **Record**: the owner logs what was paid. Pasting the M-Pesa message fills the amount and code, and a code already used is rejected.
-2. **Agree**: the driver taps Agree or Dispute, with a note. An agreed day is locked. A disputed day is corrected as a new record, and the old one is kept.
+2. **Agree**: the driver taps Agree or Dispute, with a note. An agreed day is locked. A disputed day is corrected as a new record, and the old one is kept. M-Pesa codes remain reserved in the history after a correction so they cannot be recorded twice.
 3. **Verify deductions**: a driver requests a repair, tyre or fuel deduction with a reason and a receipt photo. It counts toward the hesabu only after the owner approves it.
 
 ## Also in this version
@@ -17,7 +17,8 @@ Boda, matatu and delivery owners hand vehicles to drivers who remit a daily targ
 - Remind on WhatsApp for drivers who are short (needs the driver's phone number)
 - A welcome page (`index.html`) that opens the app with Demo data or My data
 - Records page: each driver's Hesabu Record (agreed days only, with a record code) to share on WhatsApp, plus a weekly statement for the owner to send
-- Backup and restore of all data, and a print view
+- Backup and restore of all data, including when there are no vehicles yet, and a print view
+- Receipt photos are checked before saving; unreadable or unprocessable images are reported and not saved as deductions
 - Demo data and My data, stored in the browser
 
 ## Run it
