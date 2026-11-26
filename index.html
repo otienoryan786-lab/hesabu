@@ -1,68 +1,91 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0B5D3B">
-<title>Hesabu: every hesabu, written down and agreed</title>
-<meta name="description" content="A shared daily record for boda, matatu and delivery owners and their drivers.">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="welcome.css">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123d30">
+  <meta name="description" content="A clear, shared daily record for boda boda, matatu and delivery owners and their drivers. Track payments, agree deductions and keep every hesabu in one place.">
+  <meta name="color-scheme" content="light">
+  <title>Hesabu — Clear records. Better working days.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="welcome.css">
+  <link rel="manifest" href="manifest.json">
 </head>
-<body>
-<header class="top">
-  <a class="brand" href="index.html" aria-label="Hesabu home">
-    <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true">
-      <rect width="32" height="32" rx="9" fill="#F4B223"/>
-      <path d="M9 8v15M14.5 8v15M20 8v15" stroke="#0B5D3B" stroke-width="3" stroke-linecap="round"/>
-      <path d="M5.5 21.5l7 5 14-16" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span>Hesabu</span>
-  </a>
-  <a class="pill" href="app.html?mode=demo">Open app</a>
-</header>
+<body class="welcome-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="top landing-header">
+    <a class="brand" href="index.html" aria-label="Hesabu home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" width="34" height="34"><rect width="32" height="32" rx="10" fill="currentColor"/><path d="M9 8v15M14.5 8v15M20 8v15" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="m6 21 6 4 14-14" stroke="#f3bb55" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>hesabu<span class="brand-period">.</span></span>
+    </a>
+    <nav class="landing-nav" aria-label="Main navigation">
+      <a href="#how-it-works">How it works</a>
+      <a href="#for-everyone">For owners &amp; drivers</a>
+      <a class="nav-cta" href="app.html?mode=demo">Open the app <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
 
-<section class="hero">
-  <div class="wrap">
-    <h1>Every hesabu, written down and agreed.</h1>
-    <p>A shared daily record for owners of boda bodas, matatus and delivery bikes, and the drivers who work for them. No more arguing over who paid what.</p>
-    <div class="cta">
-      <a class="btn amber" href="app.html?mode=demo">Try the demo</a>
-      <a class="btn ghost" href="app.html?mode=mine">Start with my vehicles</a>
-    </div>
-    <div class="slip" aria-label="Example of a day record">
-      <div class="row"><b>KDG 508C, Wanjiku</b><span class="tag s-paid">Paid</span></div>
-      <p>Paid 600 by M-Pesa</p>
-      <p>Puncture repair 300, receipt checked</p>
-      <p><b>Covered 900 of 1,000. Owes 100.</b></p>
-      <p class="e-agreed ent">Agreed by both. Locked.</p>
-    </div>
-  </div>
-</section>
+  <main id="main">
+    <section class="hero">
+      <div class="hero-grid wrap">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> BUILT FOR THE EVERYDAY JOURNEY</p>
+          <h1>Good work deserves a <em>clear record.</em></h1>
+          <p class="hero-lede">One shared place for the daily hesabu. Record what came in, account for the costs, and agree on the day—without the notebook chase.</p>
+          <div class="cta hero-actions">
+            <a class="btn amber" href="app.html?mode=demo">Explore the demo <span aria-hidden="true">→</span></a>
+            <a class="btn ghost" href="app.html?mode=mine">Set up my vehicles</a>
+          </div>
+          <div class="hero-note"><span class="checkmark" aria-hidden="true">✓</span> Private to this device. Works offline. No account needed.</div>
+        </div>
 
-<section class="sec"><div class="wrap">
-  <h2>How a day works</h2>
-  <ol class="steps">
-    <li><div><b>Record.</b> The owner logs the payment, or pastes the M-Pesa message and the amount and code fill in.</div></li>
-    <li><div><b>Check.</b> A driver asks to deduct a repair with a receipt photo. It counts only after the owner approves it.</div></li>
-    <li><div><b>Agree.</b> The driver agrees or disputes. An agreed day is locked, and a correction is a new record.</div></li>
-  </ol>
-</div></section>
+        <div class="preview-wrap" aria-label="Example daily record">
+          <div class="preview-orbit orbit-one"></div><div class="preview-orbit orbit-two"></div>
+          <article class="preview-card">
+            <div class="preview-top"><div><span class="preview-label">TODAY’S RECORD</span><strong>KDG 508C</strong></div><span class="tag s-paid">Agreed</span></div>
+            <div class="preview-driver"><span class="avatar">W</span><span><b>Wanjiku</b><small>Delivery · Tuesday, 18 June</small></span><span class="verified" aria-label="Verified">✓</span></div>
+            <div class="preview-amount"><span>Paid to owner</span><strong>KES 800</strong></div>
+            <div class="preview-amount deduction"><span>Approved puncture repair</span><strong>+ KES 300</strong></div>
+            <div class="preview-total"><span>Hesabu covered</span><strong>KES 1,100 <small>/ 1,000</small></strong></div>
+            <div class="preview-footer"><span><i></i> Both sides agreed</span><span>Record saved</span></div>
+          </article>
+          <div class="float-note"><span class="float-icon">↗</span><span><b>Nothing gets lost.</b><small>Every day, in one place.</small></span></div>
+          <span class="hero-stamp" aria-hidden="true">PAMOJA<br>NA HESABU</span>
+        </div>
+      </div>
+      <div class="hero-bottom wrap"><span>MADE FOR KENYA’S EVERYDAY TRANSPORT</span><span class="hero-bottom-line"></span><span>BODA · MATATU · DELIVERY</span></div>
+    </section>
 
-<section class="sec alt"><div class="wrap">
-  <h2>What each side gets</h2>
-  <div class="who">
-    <div><h3>Owners</h3><p>See who is behind today, carry arrears forward, stop one M-Pesa payment being counted twice, and know what each vehicle really earns after repairs and costs.</p></div>
-    <div><h3>Drivers</h3><p>A record nobody can quietly change, a fair way to claim repairs, and a Hesabu Record to show a new employer or lender.</p></div>
-  </div>
-</div></section>
+    <section class="value-strip" aria-label="Hesabu benefits"><div class="wrap value-grid">
+      <div><span class="value-number">01</span><p><b>Clear from day one</b><small>Payments and balances, written down.</small></p></div>
+      <div><span class="value-number">02</span><p><b>Fair on both sides</b><small>Drivers can review and agree.</small></p></div>
+      <div><span class="value-number">03</span><p><b>Ready when you are</b><small>Works on your phone, even offline.</small></p></div>
+    </div></section>
 
-<section class="foot"><div class="wrap">
-  <p>In this version your data stays on your phone. Download a backup from the Records page. Online sync, automatic M-Pesa matching and logins are coming next.</p>
-  <div class="cta"><a class="btn" href="app.html?mode=demo">Try the demo</a><a class="btn alt" href="app.html?mode=mine">Start with my vehicles</a></div>
-</div></section>
-<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+    <section class="story-section" id="how-it-works"><div class="wrap story-grid">
+      <div class="section-intro"><p class="eyebrow dark-eyebrow">A BETTER DAILY RHYTHM</p><h2>Three steps.<br><em>No guesswork.</em></h2><p>Keep the routine simple, transparent and easy to check later.</p><a class="text-link" href="app.html?mode=demo">See how it works <span aria-hidden="true">→</span></a></div>
+      <ol class="steps">
+        <li><span class="step-index">01</span><div><h3>Record the day</h3><p>Log what was paid, or paste an M-Pesa message to fill in the amount and transaction code.</p></div><span class="step-symbol" aria-hidden="true">↙</span></li>
+        <li><span class="step-index">02</span><div><h3>Account for costs</h3><p>Request a repair or fuel deduction with a reason and receipt. It only counts when approved.</p></div><span class="step-symbol" aria-hidden="true">＋</span></li>
+        <li><span class="step-index">03</span><div><h3>Agree together</h3><p>The driver reviews the record. Agreed days are locked; a correction keeps the history intact.</p></div><span class="step-symbol" aria-hidden="true">✓</span></li>
+      </ol>
+    </div></section>
+
+    <section class="people-section" id="for-everyone"><div class="wrap">
+      <div class="people-heading"><p class="eyebrow dark-eyebrow">ONE RECORD, TWO PERSPECTIVES</p><h2>Better when everyone<br>can see the same thing.</h2></div>
+      <div class="people-grid">
+        <article class="person-card owner-card"><span class="person-icon" aria-hidden="true">↗</span><p class="person-kicker">FOR OWNERS</p><h3>Stay on top of every vehicle.</h3><p>See who is up to date, carry arrears forward, check duplicate payment codes and understand what each vehicle earns.</p><a href="app.html?mode=mine">Start with my vehicles <span aria-hidden="true">→</span></a></article>
+        <article class="person-card driver-card"><span class="person-icon" aria-hidden="true">✓</span><p class="person-kicker">FOR DRIVERS</p><h3>Your work, properly recorded.</h3><p>Review every day, request fair deductions with receipts, and share a record of agreed days when you need it.</p><a href="app.html?mode=demo">Explore a driver’s view <span aria-hidden="true">→</span></a></article>
+      </div>
+    </div></section>
+
+    <section class="closing-cta"><div class="wrap closing-inner"><div><p class="eyebrow">START WITH A CLEARER DAY</p><h2>Let’s get the record straight.</h2><p>Try the demo, or set up your own vehicles in a few minutes.</p></div><div class="cta"><a class="btn dark-btn" href="app.html?mode=demo">Try the demo <span aria-hidden="true">→</span></a><a class="btn outline-dark" href="app.html?mode=mine">Use my data</a></div></div></section>
+  </main>
+
+  <footer class="site-footer"><div class="wrap footer-inner"><a class="brand footer-brand" href="index.html"><span>hesabu<span class="brand-period">.</span></span></a><p>Your records stay on this device. Download a backup from the Records page. Hesabu is a record-keeping tool, not a payment service.</p><span>Made for the work that keeps us moving.</span></div></footer>
+  <script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </body>
 </html>
